@@ -19,7 +19,7 @@ Header formatting
 -----------------
 Example header formatting:
 
-```
+```sh
 #!/bin/sh
 #
 # barstatus - output info in a lemonbar-readable format
@@ -36,29 +36,87 @@ The third line will have the name of the script, a dash (-), and then a short de
 
 Functions
 ---------
-Functions shall be written as follows:
+Functions shall be written using parentheses instead of using the `function` prefix. Example:
+```sh
+# Good
+my_function() {
+  # code here
+}
 
-```
-dosomething() {
-  code here
+# Bad
+function my_function {
+  # code here
+}
+
+# Bad again
+function my_function() {
+  # code here
 }
 ```
 
 Indentation
 -----------
-Indentation shall be two spaces, no tabs are to be used.
+Indentation shall be two spaces, no tabs are to be used. Example:
+```sh
+# Good
+error() {
+  echo "$*" >&2
+}
+
+# Bad
+error() {
+        echo "$*" >&2
+}
+``` 
 
 while, for and if
 -----------------
-Put `; do` and `; then` on the same line as `while`, `for`, or `if`.
+Put `; do` and `; then` on the same line as `while`, `for`, or `if`. For example:
+```sh
+# Good
+while true; do
+  echo 'foo'
+done
+
+# Bad
+while true
+do
+  echo 'foo'
+done
+```
 
 Command substitution
 --------------------
-Use `$(command)` instead of backticks.
+Use `$(command)` instead of backticks. Example:
+```sh
+# Good
+echo "Today is $(date +%x)"
+
+# Bad
+echo "Today is `date +%x`"
+```
+This allows for more readable nesting of command substitution, because you need to escape nested backticks. Example:
+```sh
+# Good
+command_one $(command_two) $(command_three))
+
+# Bad
+command_one `command_two \`command_three\``
+```
 
 Test
 ----
-Use `[`, not `test`.
+Use brackets, a.k.a: `[` instead of `test`. Use the enhanced double brackets `[[` if you're using bash. Example:
+```sh
+# Bash
+[[ -f FILE1 && -f FILE2 ]] && echo 'The files are there!'
+
+# Good
+[ -f FILE1 ] && [ -f FILE2 ]] && echo 'The files are there!'
+
+# Bad
+test -f FILE1 && test -f FILE2 && echo 'The files are there!'
+```
 
 Comments
 --------
@@ -70,9 +128,18 @@ If a comment is needed inline, use a tab character and use the normal comment fo
 
 Quotes
 ------
-Use `'` when no special characters need to be interpreted.
+Use single quotation marks `'` if variable interpolation isn't being used.
 
-If special characters do need to be interpreted, use `"`. For example, a `${variable}` will need `"` and not `'`.
+If interpolation is being used, double quotation marks `"` are necessary . For example, a `${variable}` will need to be quoted around `"` instead of `'`. Example:
+```sh
+VAR=5
+
+echo "The number is ${VAR}"
+# The number is 5
+
+echo 'The number is ${VAR}'
+# The number is ${VAR}
+```
 
 Structure and readability
 -------------------------
@@ -82,7 +149,7 @@ Define major parts of the program with `## DESCRIPTION`. This should always have
 
 Here's an example:
 
-```
+```sh
 
 ## CONFIGURATION
 
