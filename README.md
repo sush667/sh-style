@@ -85,6 +85,23 @@ do
 done
 ```
 
+case
+----
+Case options should be indented two spaces. If the option's function is only one line, put it on the same line as the option, and follow it with the standard double semicolons on that line as well. If it is two or more lines, start a new line and indent two more spaces. The two semicolons will be on the last line of the function. Example:
+
+```sh
+case "${opt}" in
+    f) ful='true' ;;
+    h)
+      usage
+      exit 0 ;;
+    s) sel='true' ;;
+    *)
+      usage
+      exit 1 ;;
+esac
+```
+
 Command substitution
 --------------------
 Use `$(command)` instead of backticks. Example:
